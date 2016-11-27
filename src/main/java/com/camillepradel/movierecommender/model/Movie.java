@@ -14,7 +14,7 @@ public class Movie {
         this.genres = genres;
     }
 
-    public long getId() {
+    public int getId() {
         return this.id;
     }
 

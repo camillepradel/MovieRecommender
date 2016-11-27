@@ -5,12 +5,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.camillepradel.movierecommender.model.Genre;
 import com.camillepradel.movierecommender.model.Movie;
+import com.camillepradel.movierecommender.model.Rating;
 
 @Controller
 public class MainController {
@@ -47,5 +50,46 @@ public class MainController {
 		mv.addObject("userId", userId);
 		mv.addObject("movies", movies);
 		return mv;
+	}
+
+	@RequestMapping(value = "/movieratings", method = RequestMethod.GET)
+	public ModelAndView showMoviesRattings(
+			@RequestParam(value = "user_id", required = true) Integer userId) {
+		System.out.println("GET /movieratings for user " + userId);
+
+		// TODO: write query to retrieve all movies from DB
+		List<Movie> allMovies = new LinkedList<Movie>();
+		Genre genre0 = new Genre(0, "genre0");
+		Genre genre1 = new Genre(1, "genre1");
+		Genre genre2 = new Genre(2, "genre2");
+		allMovies.add(new Movie(0, "Titre 0", Arrays.asList(new Genre[] {genre0, genre1})));
+		allMovies.add(new Movie(1, "Titre 1", Arrays.asList(new Genre[] {genre0, genre2})));
+		allMovies.add(new Movie(2, "Titre 2", Arrays.asList(new Genre[] {genre1})));
+		allMovies.add(new Movie(3, "Titre 3", Arrays.asList(new Genre[] {genre0, genre1, genre2})));
+
+		// TODO: write query to retrieve all ratings from the specified user
+		List<Rating> ratings = new LinkedList<Rating>();
+		ratings.add(new Rating(new Movie(0, "Titre 0", Arrays.asList(new Genre[] {genre0, genre1})), userId, 3));
+		ratings.add(new Rating(new Movie(2, "Titre 2", Arrays.asList(new Genre[] {genre1})), userId, 4));
+
+		ModelAndView mv = new ModelAndView("movieratings");
+		mv.addObject("userId", userId);
+		mv.addObject("allMovies", allMovies);
+		mv.addObject("ratings", ratings);
+
+		return mv;
+	}
+
+	@RequestMapping(value = "/movieratings", method = RequestMethod.POST)
+	public String saveOrUpdateRating(@ModelAttribute("rating") Rating rating) {
+		System.out.println("POST /movieratings for user " + rating.getUserId()
+											+ ", movie " + rating.getMovie().getId()
+											+ ", score " + rating.getScore());
+
+		// TODO: add query which
+		//         - add rating between specified user and movie if it doesn't exist
+		//         - update it if it does exist
+
+		return "redirect:/movieratings?user_id=" + rating.getUserId();
 	}
 }
