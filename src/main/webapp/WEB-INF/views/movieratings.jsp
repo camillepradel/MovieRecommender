@@ -34,7 +34,7 @@
 			
 		<li>
 			${movie.title} - ${score} (user id: ${userId}, movie id: ${movie.id})
-			<form method="post" action="/MovieRecommender/movieratings">
+			<form method="post" action="movieratings">
 				<input type="number" name="userId" value="${userId}" hidden="hidden">
 				<input type="number" name="movieId" value="${movie.id}" hidden="hidden">
 				<input type="radio" name="score" onclick="this.form.submit();" value="1" <c:if test="${score eq 1}">checked</c:if>>
