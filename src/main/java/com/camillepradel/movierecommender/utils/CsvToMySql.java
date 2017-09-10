@@ -17,7 +17,7 @@ public class CsvToMySql {
     static final String usersCsvFile = pathToCsvFiles + "users.csv";
     static final String moviesCsvFile = pathToCsvFiles + "movies.csv";
     static final String genresCsvFile = pathToCsvFiles + "genres.csv";
-    static final String movGenresCsvFile = pathToCsvFiles + "mov_genre.csv";
+    static final String movGenreCsvFile = pathToCsvFiles + "mov_genre.csv";
     static final String ratingsCsvFile = pathToCsvFiles + "ratings.csv";
     static final String friendsCsvFile = pathToCsvFiles + "friends.csv";
     static final String cvsSplitBy = ",";
@@ -109,7 +109,7 @@ public class CsvToMySql {
                     String[] values = line.split(cvsSplitBy);
                     int movieId = Integer.parseInt(values[0]);
                     String title = String.join(",", Arrays.copyOfRange(values, 1, values.length - 1));
-                    Date date = new Date(Long.parseLong(values[values.length - 1]));
+                    Date date = new Date(Long.parseLong(values[values.length - 1]) * 1000);
                     insertMovies.setInt(1, movieId);
                     insertMovies.setString(2, title);
                     insertMovies.setDate(3, date);
@@ -195,9 +195,9 @@ public class CsvToMySql {
         }
     }
 
-    private static void commitMovGenres(Connection connection) throws SQLException {
+    private static void commitMovieGenre(Connection connection) throws SQLException {
         // mov_genre.csv
-        System.out.println(movGenresCsvFile);
+        System.out.println(movGenreCsvFile);
 
         // create table
         Statement statement = connection.createStatement();
@@ -213,14 +213,14 @@ public class CsvToMySql {
                 + "  ADD CONSTRAINT movie_genre_to_genre FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE CASCADE ON UPDATE CASCADE;\n");
 
         // populate table
-        try (BufferedReader br = new BufferedReader(new FileReader(movGenresCsvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(movGenreCsvFile))) {
 
             String insertQuery = "INSERT INTO movie_genre (movie_id, genre_id) VALUES (?, ?)";
-            PreparedStatement insertGenres = null;
+            PreparedStatement insertMovieGenre = null;
 
             try {
                 connection.setAutoCommit(false);
-                insertGenres = connection.prepareStatement(insertQuery);
+                insertMovieGenre = connection.prepareStatement(insertQuery);
 
                 String line;
                 br.readLine(); // skip first line
@@ -228,9 +228,9 @@ public class CsvToMySql {
                     String[] values = line.split(cvsSplitBy);
                     int movieId = Integer.parseInt(values[0]);
                     int genreId = Integer.parseInt(values[1]);
-                    insertGenres.setInt(1, movieId);
-                    insertGenres.setInt(2, genreId);
-                    insertGenres.executeUpdate();
+                    insertMovieGenre.setInt(1, movieId);
+                    insertMovieGenre.setInt(2, genreId);
+                    insertMovieGenre.executeUpdate();
                 }
                 connection.commit();
 
@@ -245,8 +245,8 @@ public class CsvToMySql {
                     }
                 }
             } finally {
-                if (insertGenres != null) {
-                    insertGenres.close();
+                if (insertMovieGenre != null) {
+                    insertMovieGenre.close();
                 }
                 connection.setAutoCommit(true);
             }
@@ -258,11 +258,127 @@ public class CsvToMySql {
     private static void commitRatings(Connection connection) throws SQLException {
         // ratings.csv
         System.out.println(ratingsCsvFile);
+
+        // create table
+        Statement statement = connection.createStatement();
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS ratings (\n"
+                + "  user_id int(11) NOT NULL,\n"
+                + "  movie_id int(11) NOT NULL,\n"
+                + "  rating int(11) NOT NULL,\n"
+                + "  date date NOT NULL,\n"
+                + "  KEY user_id (user_id),\n"
+                + "  KEY movie_id (movie_id)\n"
+                + ");");
+        statement.executeUpdate("ALTER TABLE ratings\n"
+                + "  ADD CONSTRAINT ratings_to_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;\n");
+        statement.executeUpdate("ALTER TABLE ratings\n"
+                + "  ADD CONSTRAINT ratings_to_movie FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE ON UPDATE CASCADE;\n");
+
+        // populate table
+        try (BufferedReader br = new BufferedReader(new FileReader(ratingsCsvFile))) {
+
+            String insertQuery = "INSERT INTO ratings (user_id, movie_id, rating, date) VALUES (?, ?, ?, ?)";
+            PreparedStatement insertRatings = null;
+
+            try {
+                connection.setAutoCommit(false);
+                insertRatings = connection.prepareStatement(insertQuery);
+
+                String line;
+                br.readLine(); // skip first line
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split(cvsSplitBy);
+                    int userId = Integer.parseInt(values[0]);
+                    int movieId = Integer.parseInt(values[1]);
+                    int ratingValue = Integer.parseInt(values[2]);
+                    Date date = new Date(Long.parseLong(values[3]) * 1000);
+                    insertRatings.setInt(1, userId);
+                    insertRatings.setInt(2, movieId);
+                    insertRatings.setInt(3, ratingValue);
+                    insertRatings.setDate(4, date);
+                    insertRatings.executeUpdate();
+                }
+                connection.commit();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                if (connection != null) {
+                    try {
+                        System.err.print("Transaction is being rolled back");
+                        connection.rollback();
+                    } catch (SQLException e2) {
+                        e2.printStackTrace();
+                    }
+                }
+            } finally {
+                if (insertRatings != null) {
+                    insertRatings.close();
+                }
+                connection.setAutoCommit(true);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void commitFriends(Connection connection) throws SQLException {
         // friends.csv
         System.out.println(friendsCsvFile);
+
+        // create table
+        Statement statement = connection.createStatement();
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS friends (\n"
+                + "  user1_id int(11) NOT NULL,\n"
+                + "  user2_id int(11) NOT NULL,\n"
+                + "  KEY user1_id (user1_id),\n"
+                + "  KEY user2_id (user2_id)\n"
+                + ");");
+        statement.executeUpdate("ALTER TABLE friends\n"
+                + "  ADD CONSTRAINT friends_to_user1 FOREIGN KEY (user1_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;\n");
+        statement.executeUpdate("ALTER TABLE friends\n"
+                + "  ADD CONSTRAINT friends_to_user2 FOREIGN KEY (user2_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;\n");
+
+        // populate table
+        try (BufferedReader br = new BufferedReader(new FileReader(friendsCsvFile))) {
+
+            String insertQuery = "INSERT INTO friends (user1_id, user2_id) VALUES (?, ?)";
+            PreparedStatement insertFriends = null;
+
+            try {
+                connection.setAutoCommit(false);
+                insertFriends = connection.prepareStatement(insertQuery);
+
+                String line;
+                br.readLine(); // skip first line
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split(cvsSplitBy);
+                    int user1Id = Integer.parseInt(values[0]);
+                    int user2Id = Integer.parseInt(values[1]);
+                    insertFriends.setInt(1, user1Id);
+                    insertFriends.setInt(2, user2Id);
+                    insertFriends.executeUpdate();
+                }
+                connection.commit();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                if (connection != null) {
+                    try {
+                        System.err.print("Transaction is being rolled back");
+                        connection.rollback();
+                    } catch (SQLException e2) {
+                        e2.printStackTrace();
+                    }
+                }
+            } finally {
+                if (insertFriends != null) {
+                    insertFriends.close();
+                }
+                connection.setAutoCommit(true);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
@@ -296,7 +412,7 @@ public class CsvToMySql {
             commitUsers(connection);
             commitMovies(connection);
             commitGenres(connection);
-            commitMovGenres(connection);
+            commitMovieGenre(connection);
             commitRatings(connection);
             commitFriends(connection);
 
