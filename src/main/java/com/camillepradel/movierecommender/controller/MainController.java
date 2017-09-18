@@ -19,19 +19,18 @@ import javax.annotation.PostConstruct;
 public class MainController {
 
     AbstractDatabase db;
-    
+
     @PostConstruct
     public void init() {
         this.db = new Neo4jDatabase();
-    }    
-
+    }
+    
     @RequestMapping("/hello")
     public ModelAndView showMessage(
             @RequestParam(value = "name", required = false, defaultValue = "World") String name) {
-        System.out.println("in controller");
-
         ModelAndView mv = new ModelAndView("helloworld");
-        mv.addObject("message", "Welcome to Spring MVC!");
+        String message = "Looks like it's working!";
+        mv.addObject("message", message);
         mv.addObject("name", name);
         return mv;
     }
@@ -41,8 +40,8 @@ public class MainController {
             @RequestParam(value = "user_id", required = false) Integer userId) {
         System.out.println("show Movies of user " + userId);
 
-        List<Movie> movies = userId != null? db.getMoviesRatedByUser(userId): db.getAllMovies();
-        
+        List<Movie> movies = userId != null ? db.getMoviesRatedByUser(userId) : db.getAllMovies();
+
         ModelAndView mv = new ModelAndView("movies");
         mv.addObject("userId", userId);
         mv.addObject("movies", movies);
@@ -72,7 +71,7 @@ public class MainController {
                 + ", score " + rating.getScore());
 
         db.addOrUpdateRating(rating);
-        
+
         return "redirect:/movieratings?user_id=" + rating.getUserId();
     }
 
