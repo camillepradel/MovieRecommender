@@ -273,6 +273,8 @@ public class CsvToMySql {
                 + "  ADD CONSTRAINT ratings_to_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;\n");
         statement.executeUpdate("ALTER TABLE ratings\n"
                 + "  ADD CONSTRAINT ratings_to_movie FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE ON UPDATE CASCADE;\n");
+        statement.executeUpdate("ALTER TABLE ratings\n"
+                + "  ADD UNIQUE unique_index(user_id, movie_id);\n");
 
         // populate table
         try (BufferedReader br = new BufferedReader(new FileReader(ratingsCsvFile))) {

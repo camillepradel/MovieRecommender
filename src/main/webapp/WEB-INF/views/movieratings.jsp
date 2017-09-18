@@ -14,7 +14,7 @@
 <ul>
 	<c:forEach items="${ratings}" var="rating">
 		<li>
-			${rating.getMovie().id} - ${rating.score}
+			${rating.getMovie().title} - ${rating.score}
 		</li>
 	</c:forEach>
 </ul>
