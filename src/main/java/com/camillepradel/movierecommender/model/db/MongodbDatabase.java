@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Neo4jDatabase extends AbstractDatabase {
+public class MongodbDatabase extends AbstractDatabase {
 
     @Override
     public List<Movie> getAllMovies() {
@@ -76,5 +76,5 @@ public class Neo4jDatabase extends AbstractDatabase {
         recommendations.add(new Rating(new Movie(2, titlePrefix + "Titre 2", Arrays.asList(new Genre[]{genre1})), userId, 4));
         recommendations.add(new Rating(new Movie(3, titlePrefix + "Titre 3", Arrays.asList(new Genre[]{genre0, genre1, genre2})), userId, 3));
         return recommendations;
-    }
+    }    
 }

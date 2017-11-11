@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.camillepradel.movierecommender.model.Movie;
 import com.camillepradel.movierecommender.model.Rating;
 import com.camillepradel.movierecommender.model.db.AbstractDatabase;
-import com.camillepradel.movierecommender.model.db.Neo4jDatabase;
+import com.camillepradel.movierecommender.model.db.MySqlDatabase;
+//import com.camillepradel.movierecommender.model.db.Neo4jDatabase;
+//import com.camillepradel.movierecommender.model.db.MongodbDatabase;
 import javax.annotation.PostConstruct;
 
 @Controller
@@ -22,7 +24,9 @@ public class MainController {
 
     @PostConstruct
     public void init() {
-        this.db = new Neo4jDatabase();
+        this.db = new MySqlDatabase();
+//        this.db = new Neo4jDatabase();
+//        this.db = new MongodbDatabase();
     }
     
     @RequestMapping("/hello")

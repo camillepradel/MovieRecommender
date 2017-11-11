@@ -53,7 +53,6 @@ public class MySqlDatabase extends AbstractDatabase {
             String genreName = rs.getString("genre_name");
             allGenres.put(genreId, new Genre(genreId, genreName));
         }
-
         return allGenres;
     }
 
@@ -171,7 +170,7 @@ public class MySqlDatabase extends AbstractDatabase {
 
     @Override
     public List<Rating> processRecommendationsForUser(int userId, int processingMode) {
-        // TODO: process recommendations for specified user exploiting other users ratings
+        // process recommendations for specified user exploiting other users ratings
         //       use different methods depending on processingMode parameter
         Genre genre0 = new Genre(0, "genre0");
         Genre genre1 = new Genre(1, "genre1");
