@@ -21,8 +21,8 @@ public class MySqlDatabase extends AbstractDatabase {
     Connection connection = null;
 
     // db connection info
-    String url = "jdbc:mysql://192.168.56.101:3306/movie_recommender"
-            + "?zeroDateTimeBehavior=convertToNull&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    String url = "jdbc:mysql://127.0.0.1:3306/movie_recommender"
+            + "?zeroDateTimeBehavior=CONVERT_TO_NULL&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     String login = "root";
     String password = "root";
 

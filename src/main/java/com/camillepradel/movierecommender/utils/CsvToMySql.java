@@ -1,8 +1,11 @@
 package com.camillepradel.movierecommender.utils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -13,17 +16,18 @@ import java.util.Arrays;
 
 public class CsvToMySql {
 
-    static final String pathToCsvFiles = "D:\\MovieRecommender\\src\\main\\java\\com\\camillepradel\\movierecommender\\utils\\";
-    static final String usersCsvFile = pathToCsvFiles + "users.csv";
-    static final String moviesCsvFile = pathToCsvFiles + "movies.csv";
-    static final String genresCsvFile = pathToCsvFiles + "genres.csv";
-    static final String movGenreCsvFile = pathToCsvFiles + "mov_genre.csv";
-    static final String ratingsCsvFile = pathToCsvFiles + "ratings.csv";
-    static final String friendsCsvFile = pathToCsvFiles + "friends.csv";
-    static final String cvsSplitBy = ",";
+    static final Path RESOURCES = Paths.get(new File("./src/main/resources/").getAbsolutePath());
+    
+    static final File USERS_CSV_FILE = RESOURCES.resolve("users.csv").toFile();
+    static final File MOVIES_CSV_FILE = RESOURCES.resolve("movies.csv").toFile();
+    static final File GENRES_CSV_FILE = RESOURCES.resolve("genres.csv").toFile();
+    static final File MOVIE_GENRES_FILE = RESOURCES.resolve("mov_genre.csv").toFile();
+    static final File RATINGS_CSV_FILE = RESOURCES.resolve("ratings.csv").toFile();
+    static final File FRIENDS_CSV_FILE = RESOURCES.resolve("friends.csv").toFile();
+    static final String CSV_SEPARATOR = ",";
 
     private static void commitUsers(Connection connection) throws SQLException {
-        System.out.println(usersCsvFile);
+        System.out.println(USERS_CSV_FILE);
 
         // create table
         Statement statement = connection.createStatement();
@@ -37,7 +41,7 @@ public class CsvToMySql {
                 + ");");
 
         // populate table
-        try (BufferedReader br = new BufferedReader(new FileReader(usersCsvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(USERS_CSV_FILE))) {
 
             String insertQuery = "INSERT INTO users (id, age, sex, occupation, zip) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement insertUsers = null;
@@ -49,7 +53,7 @@ public class CsvToMySql {
                 String line;
                 br.readLine(); // skip first line
                 while ((line = br.readLine()) != null) {
-                    String[] values = line.split(cvsSplitBy);
+                    String[] values = line.split(CSV_SEPARATOR);
                     insertUsers.setInt(1, Integer.parseInt(values[0]));
                     insertUsers.setInt(2, Integer.parseInt(values[1]));
                     insertUsers.setString(3, values[2]);
@@ -82,7 +86,7 @@ public class CsvToMySql {
 
     private static void commitMovies(Connection connection) throws SQLException {
         // movies.csv
-        System.out.println(moviesCsvFile);
+        System.out.println(MOVIES_CSV_FILE);
 
         // create table
         Statement statement = connection.createStatement();
@@ -94,7 +98,7 @@ public class CsvToMySql {
                 + ");");
 
         // populate table
-        try (BufferedReader br = new BufferedReader(new FileReader(moviesCsvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MOVIES_CSV_FILE))) {
 
             String insertQuery = "INSERT INTO movies (id, title, date) VALUES (?, ?, ?)";
             PreparedStatement insertMovies = null;
@@ -106,7 +110,7 @@ public class CsvToMySql {
                 String line;
                 br.readLine(); // skip first line
                 while ((line = br.readLine()) != null) {
-                    String[] values = line.split(cvsSplitBy);
+                    String[] values = line.split(CSV_SEPARATOR);
                     int movieId = Integer.parseInt(values[0]);
                     String title = String.join(",", Arrays.copyOfRange(values, 1, values.length - 1));
                     Date date = new Date(Long.parseLong(values[values.length - 1]) * 1000);
@@ -139,7 +143,7 @@ public class CsvToMySql {
 
     private static void commitGenres(Connection connection) throws SQLException {
         // genres.csv
-        System.out.println(genresCsvFile);
+        System.out.println(GENRES_CSV_FILE);
 
         // create table
         Statement statement = connection.createStatement();
@@ -153,7 +157,7 @@ public class CsvToMySql {
         statement.execute("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';");
 
         // populate table
-        try (BufferedReader br = new BufferedReader(new FileReader(genresCsvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(GENRES_CSV_FILE))) {
 
             String insertQuery = "INSERT INTO genres (name, id) VALUES (?, ?)";
             PreparedStatement insertGenres = null;
@@ -165,7 +169,7 @@ public class CsvToMySql {
                 String line;
                 br.readLine(); // skip first line
                 while ((line = br.readLine()) != null) {
-                    String[] values = line.split(cvsSplitBy);
+                    String[] values = line.split(CSV_SEPARATOR);
                     String name = values[0];
                     int genreId = Integer.parseInt(values[1]);
                     insertGenres.setString(1, name);
@@ -197,7 +201,7 @@ public class CsvToMySql {
 
     private static void commitMovieGenre(Connection connection) throws SQLException {
         // mov_genre.csv
-        System.out.println(movGenreCsvFile);
+        System.out.println(MOVIE_GENRES_FILE);
 
         // create table
         Statement statement = connection.createStatement();
@@ -213,7 +217,7 @@ public class CsvToMySql {
                 + "  ADD CONSTRAINT movie_genre_to_genre FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE CASCADE ON UPDATE CASCADE;\n");
 
         // populate table
-        try (BufferedReader br = new BufferedReader(new FileReader(movGenreCsvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(MOVIE_GENRES_FILE))) {
 
             String insertQuery = "INSERT INTO movie_genre (movie_id, genre_id) VALUES (?, ?)";
             PreparedStatement insertMovieGenre = null;
@@ -225,7 +229,7 @@ public class CsvToMySql {
                 String line;
                 br.readLine(); // skip first line
                 while ((line = br.readLine()) != null) {
-                    String[] values = line.split(cvsSplitBy);
+                    String[] values = line.split(CSV_SEPARATOR);
                     int movieId = Integer.parseInt(values[0]);
                     int genreId = Integer.parseInt(values[1]);
                     insertMovieGenre.setInt(1, movieId);
@@ -257,7 +261,7 @@ public class CsvToMySql {
 
     private static void commitRatings(Connection connection) throws SQLException {
         // ratings.csv
-        System.out.println(ratingsCsvFile);
+        System.out.println(RATINGS_CSV_FILE);
 
         // create table
         Statement statement = connection.createStatement();
@@ -277,7 +281,7 @@ public class CsvToMySql {
                 + "  ADD UNIQUE unique_index(user_id, movie_id);\n");
 
         // populate table
-        try (BufferedReader br = new BufferedReader(new FileReader(ratingsCsvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(RATINGS_CSV_FILE))) {
 
             String insertQuery = "INSERT INTO ratings (user_id, movie_id, rating, date) VALUES (?, ?, ?, ?)";
             PreparedStatement insertRatings = null;
@@ -289,7 +293,7 @@ public class CsvToMySql {
                 String line;
                 br.readLine(); // skip first line
                 while ((line = br.readLine()) != null) {
-                    String[] values = line.split(cvsSplitBy);
+                    String[] values = line.split(CSV_SEPARATOR);
                     int userId = Integer.parseInt(values[0]);
                     int movieId = Integer.parseInt(values[1]);
                     int ratingValue = Integer.parseInt(values[2]);
@@ -325,7 +329,7 @@ public class CsvToMySql {
 
     private static void commitFriends(Connection connection) throws SQLException {
         // friends.csv
-        System.out.println(friendsCsvFile);
+        System.out.println(FRIENDS_CSV_FILE);
 
         // create table
         Statement statement = connection.createStatement();
@@ -341,7 +345,7 @@ public class CsvToMySql {
                 + "  ADD CONSTRAINT friends_to_user2 FOREIGN KEY (user2_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;\n");
 
         // populate table
-        try (BufferedReader br = new BufferedReader(new FileReader(friendsCsvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(FRIENDS_CSV_FILE))) {
 
             String insertQuery = "INSERT INTO friends (user1_id, user2_id) VALUES (?, ?)";
             PreparedStatement insertFriends = null;
@@ -353,7 +357,7 @@ public class CsvToMySql {
                 String line;
                 br.readLine(); // skip first line
                 while ((line = br.readLine()) != null) {
-                    String[] values = line.split(cvsSplitBy);
+                    String[] values = line.split(CSV_SEPARATOR);
                     int user1Id = Integer.parseInt(values[0]);
                     int user2Id = Integer.parseInt(values[1]);
                     insertFriends.setInt(1, user1Id);
@@ -383,25 +387,20 @@ public class CsvToMySql {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
         // load JDBC driver
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
         // db connection info
-        String url = "jdbc:mysql://192.168.56.101:3306/movie_recommender"
-                + "?zeroDateTimeBehavior=convertToNull&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+        String url = "jdbc:mysql://127.0.0.1:3306/movie_recommender"
+                + "?zeroDateTimeBehavior=CONVERT_TO_NULL&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
         String login = "root";
         String password = "root";
 
-        Connection connection = null;
-
-        try {
-            connection = DriverManager.getConnection(url, login, password);
-            Statement statement = connection.createStatement();
+        try (
+    		Connection connection = DriverManager.getConnection(url, login, password);
+        	Statement statement = connection.createStatement();
+		) {
 
             // drop all tables
             statement.executeUpdate("DROP TABLE IF EXISTS movie_genre;");
@@ -418,16 +417,6 @@ public class CsvToMySql {
             commitRatings(connection);
             commitFriends(connection);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ignore) {
-                    // exception occured while closing connexion -> nothing else can be done
-                }
-            }
         }
 
         System.out.println("done");
