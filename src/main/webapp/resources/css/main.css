@@ -1,0 +1,166 @@
+/*
+ *  CSS for the whole application, ordered with the following sections :
+ *
+ * 1. General
+ * 2. Buttons / navigation
+ * 3. Scrollbar
+ * 4. Titles
+ * 5. Movie genre
+ * 6. Components
+ * 7. Movie ratings page
+ *
+ */
+
+/*
+ *  GENERAL
+ */
+ 
+html, body {
+	background-color: #2D2C2C;
+	color: #e7e7e7;
+	font-family: Roboto;
+	text-align: center;
+}
+
+/*
+ *  BUTTONS / NAVIGATION
+ */
+ 
+.redirect {
+	text-align: center;
+	margin-top: 5%;
+	padding: 10px 10px;
+	border: 1px solid #696B56;
+	display: inline-block;
+}
+
+.redirect:hover {
+	border: 1px solid #ABA71F;
+}
+
+a:hover {
+	color: #ABA71F;
+}
+
+#navigation > .redirect {
+	margin-right: 20px;
+} 
+
+a {
+	text-decoration: none;	
+	color: #696B56;
+}
+
+/*
+ *  SCROLLBAR
+ */
+
+::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #2D2C2C;
+}
+
+::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: #2D2C2C;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: #555;
+}
+
+/*
+ *  TITLES
+ */
+
+h1 {
+	color: #ABA71F;
+	text-align: center;
+	font-size: 38px;
+	margin-top: 10%;
+	margin-bottom: 10px;
+}
+
+h2 {
+	color: #ABA71F;
+	text-align: center;
+	font-size: 34px;
+	margin-top: 25px;
+	margin-bottom: 30px;
+}
+
+h6 {
+	font-size: 12px;
+	text-align: center;
+	color: #696B56;
+	margin-top: 5px;
+}
+
+/*
+ *  MOVIE GENRE
+ */
+
+
+li {
+	width: 30%;
+	display: block;
+	float: left;
+	margin-bottom: 25px;
+}
+
+.genre {
+	color: #696B56;
+	font-style: italic;
+	font-size: 14px;
+}
+
+/*
+ *  COMPONENTS
+ */
+ 
+#project-speech {
+	width: 50%;
+	margin-left: 25%;
+	margin-top: 5%;
+	font-size: 14px;
+	text-align: justify;
+	line-height: 1.8;
+}
+
+#ratings {
+	margin: auto;
+}
+
+#rated-movies {
+	width: 60%;
+	float: left;
+}
+
+#add-rating {
+	width: 40%;
+	float: left;
+}
+
+/*
+ *  MOVIE RATINGS PAGE
+ */
+
+.rate {
+	width: 50%;
+}
+
+.rate-list {
+	width: 90%;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #A7997B;
+}
+
+.score {
+	color: #A7997B;
+	font-size: 18px;
+	font-weight: bold;
+}

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.camillepradel.movierecommender.model.Movie;
 import com.camillepradel.movierecommender.model.Rating;
-import com.camillepradel.movierecommender.model.db.AbstractDatabase;
+import com.camillepradel.movierecommender.model.db.Database;
 import com.camillepradel.movierecommender.model.db.MySqlDatabase;
 //import com.camillepradel.movierecommender.model.db.Neo4jDatabase;
 //import com.camillepradel.movierecommender.model.db.MongodbDatabase;
@@ -20,7 +20,7 @@ import javax.annotation.PostConstruct;
 @Controller
 public class MainController {
 
-    AbstractDatabase db;
+    Database db;
 
     @PostConstruct
     public void init() {
