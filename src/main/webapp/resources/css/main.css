@@ -88,7 +88,7 @@ h6 {
 	line-height: 1.8;
 }
 
-ul li {
+li {
 	width: 30%;
 	display: block;
 	float: left;
@@ -99,5 +99,34 @@ ul li {
 	color: #696B56;
 	font-style: italic;
 	font-size: 14px;
-	
+}
+
+#ratings {
+	margin: auto;
+}
+
+#rated-movies {
+	width: 60%;
+	float: left;
+}
+
+#add-rating {
+	width: 40%;
+	float: left;
+}
+
+.rate {
+	width: 50%;
+}
+
+.rate-list {
+	width: 90%;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #A7997B;
+}
+
+.score {
+	color: #A7997B;
+	font-size: 18px;
+	font-weight: bold;
 }
