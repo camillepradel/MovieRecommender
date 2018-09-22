@@ -30,6 +30,32 @@ a {
 	color: #696B56;
 }
 
+/*
+ *  SCROLLBAR
+ */
+
+::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #2D2C2C;
+}
+
+::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: #2D2C2C;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: #555;
+}
+
+/*
+ *  TITLES
+ */
+
 h1 {
 	color: #ABA71F;
 	text-align: center;
