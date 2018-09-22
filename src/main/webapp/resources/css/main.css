@@ -1,3 +1,20 @@
+/*
+ *  CSS for the whole application, ordered with the following sections :
+ *
+ * 1. General
+ * 2. Buttons / navigation
+ * 3. Scrollbar
+ * 4. Titles
+ * 5. Movie genre
+ * 6. Components
+ * 7. Movie ratings page
+ *
+ */
+
+/*
+ *  GENERAL
+ */
+ 
 html, body {
 	background-color: #2D2C2C;
 	color: white;
@@ -5,6 +22,10 @@ html, body {
 	text-align: center;
 }
 
+/*
+ *  BUTTONS / NAVIGATION
+ */
+ 
 .redirect {
 	text-align: center;
 	margin-top: 5%;
@@ -79,14 +100,10 @@ h6 {
 	margin-top: 5px;
 }
 
-#project-speech {
-	width: 50%;
-	margin-left: 25%;
-	margin-top: 5%;
-	font-size: 14px;
-	text-align: justify;
-	line-height: 1.8;
-}
+/*
+ *  MOVIE GENRE
+ */
+
 
 li {
 	width: 30%;
@@ -99,6 +116,19 @@ li {
 	color: #696B56;
 	font-style: italic;
 	font-size: 14px;
+}
+
+/*
+ *  COMPONENTS
+ */
+ 
+#project-speech {
+	width: 50%;
+	margin-left: 25%;
+	margin-top: 5%;
+	font-size: 14px;
+	text-align: justify;
+	line-height: 1.8;
 }
 
 #ratings {
@@ -114,6 +144,10 @@ li {
 	width: 40%;
 	float: left;
 }
+
+/*
+ *  MOVIE RATINGS PAGE
+ */
 
 .rate {
 	width: 50%;

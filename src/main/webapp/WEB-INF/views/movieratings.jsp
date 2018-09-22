@@ -55,7 +55,7 @@
 						</form>
 						<ul>
 							<c:forEach items="${movie.genres}" var="genre">
-								<span class="genre genre">
+								<span class="genre">
 									${genre.name}
 								</span>
 							</c:forEach>
