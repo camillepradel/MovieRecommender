@@ -2,9 +2,42 @@ html, body {
 	background-color: #2D2C2C;
 	color: white;
 	font-family: Roboto;
+	text-align: center;
+}
+
+#redirect {
+	text-align: center;
+	margin-top: 5%;
+	padding: 10px 10px;
+	border: 1px solid #ABA71F;
+	display: inline-block;
 }
 
 a {
-	text-decoration: none;
+	text-decoration: none;	
 	color: #ABA71F;
+}
+
+h1 {
+	color: #ABA71F;
+	text-align: center;
+	font-size: 38px;
+	margin-top: 10%;
+	margin-bottom: 10px;
+}
+
+h6 {
+	font-size: 12px;
+	text-align: center;
+	color: #696B56;
+	margin-top: 5px;
+}
+
+#project-speech {
+	width: 50%;
+	margin-left: 25%;
+	margin-top: 5%;
+	font-size: 14px;
+	text-align: justify;
+	line-height: 1.8;
 }
