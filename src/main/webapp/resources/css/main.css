@@ -38,6 +38,14 @@ h1 {
 	margin-bottom: 10px;
 }
 
+h2 {
+	color: #ABA71F;
+	text-align: center;
+	font-size: 34px;
+	margin-top: 25px;
+	margin-bottom: 30px;
+}
+
 h6 {
 	font-size: 12px;
 	text-align: center;
@@ -52,4 +60,18 @@ h6 {
 	font-size: 14px;
 	text-align: justify;
 	line-height: 1.8;
+}
+
+ul li {
+	width: 30%;
+	display: block;
+	float: left;
+	margin-bottom: 25px;
+}
+
+.genre {
+	color: #696B56;
+	font-style: italic;
+	font-size: 14px;
+	
 }
