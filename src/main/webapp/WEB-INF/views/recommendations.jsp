@@ -13,7 +13,7 @@
 	<body>
 	
 		<h1> Your recommendations </h1>
-		<h6>Movies you should like. Don't forget to rate them afterwards !</h6>
+		<h6>Movies you should like. Don't forget to rate them after watching them !</h6>
 		
 		<ul>
 			<c:forEach items="${recommendations}" var="recommendation">
