@@ -28,7 +28,7 @@
 			que vous connaissez bien (Neo4j et MongoDB) et de comparer les performances de chacune.
 		</div>
 		
-		<div id="redirect">
+		<div class="redirect">
 			<a href="hello?name=UT2">Browse through movies</a>
 		</div>
 	</body>

@@ -5,17 +5,29 @@ html, body {
 	text-align: center;
 }
 
-#redirect {
+.redirect {
 	text-align: center;
 	margin-top: 5%;
 	padding: 10px 10px;
-	border: 1px solid #ABA71F;
+	border: 1px solid #696B56;
 	display: inline-block;
 }
 
+.redirect:hover {
+	border: 1px solid #ABA71F;
+}
+
+a:hover {
+	color: #ABA71F;
+}
+
+#navigation > .redirect {
+	margin-right: 20px;
+} 
+
 a {
 	text-decoration: none;	
-	color: #ABA71F;
+	color: #696B56;
 }
 
 h1 {
