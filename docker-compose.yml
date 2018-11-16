@@ -1,0 +1,33 @@
+# MySQL admin password is automatically generated and displayed in lamp
+# in the following snipet, password would be 'Q86PhnJRiEa7'
+# lamp_1   | ========================================================================
+# lamp_1   | You can now connect to this MySQL Server using:
+# lamp_1   |
+# lamp_1   |     mysql -uadmin -pQ86PhnJRiEa7 -h<host> -P<port>
+# lamp_1   |
+# lamp_1   | Please remember to change the above password as soon as possible!
+# lamp_1   | MySQL user 'root' has no password but only allows local connections
+# lamp_1   | ========================================================================
+lamp:
+  image: tutum/lamp
+  restart: always
+  ports:
+    - "3306:3306"    
+
+mongo:
+  image: mongo
+  restart: always
+  ports:
+    - "27017:27017"
+  environment:
+    MONGO_INITDB_ROOT_USERNAME: root
+    MONGO_INITDB_ROOT_PASSWORD: root
+    
+neo4j:
+  image: neo4j
+  restart: always
+  ports:
+    - "7474:7474"
+    - "7687:7687"
+  environment:
+    NEO4J_AUTH: none

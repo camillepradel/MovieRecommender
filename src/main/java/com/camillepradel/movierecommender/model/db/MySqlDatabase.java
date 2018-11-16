@@ -21,10 +21,10 @@ public class MySqlDatabase extends AbstractDatabase {
     Connection connection = null;
 
     // db connection info
-    String url = "jdbc:mysql://192.168.56.101:3306/movie_recommender"
+    String url = "jdbc:mysql://localhost:3306/movie_recommender"
             + "?zeroDateTimeBehavior=convertToNull&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    String login = "root";
-    String password = "root";
+    String login = "admin";
+    String password = "Q86PhnJRiEa7";
 
     public MySqlDatabase() {
         // load JDBC driver

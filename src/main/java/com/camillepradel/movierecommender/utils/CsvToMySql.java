@@ -392,10 +392,10 @@ public class CsvToMySql {
         }
 
         // db connection info
-        String url = "jdbc:mysql://192.168.56.101:3306/movie_recommender"
+        String url = "jdbc:mysql://localhost:3306"
                 + "?zeroDateTimeBehavior=convertToNull&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-        String login = "root";
-        String password = "root";
+        String login = "admin";
+        String password = "Q86PhnJRiEa7";
 
         Connection connection = null;
 
@@ -403,13 +403,10 @@ public class CsvToMySql {
             connection = DriverManager.getConnection(url, login, password);
             Statement statement = connection.createStatement();
 
-            // drop all tables
-            statement.executeUpdate("DROP TABLE IF EXISTS movie_genre;");
-            statement.executeUpdate("DROP TABLE IF EXISTS ratings;");
-            statement.executeUpdate("DROP TABLE IF EXISTS friends;");
-            statement.executeUpdate("DROP TABLE IF EXISTS users;");
-            statement.executeUpdate("DROP TABLE IF EXISTS movies;");
-            statement.executeUpdate("DROP TABLE IF EXISTS genres;");
+            // create database
+            statement.executeUpdate("DROP DATABASE IF EXISTS movie_recommender;");
+            statement.executeUpdate("CREATE DATABASE movie_recommender;");
+            statement.executeUpdate("USE movie_recommender;");
 
             commitUsers(connection);
             commitMovies(connection);
